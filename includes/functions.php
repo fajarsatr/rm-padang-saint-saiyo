@@ -88,5 +88,12 @@ function asset_url($path) {
 }
 
 function base_url($path = '') {
-    return '/rmpadang/' . ltrim($path, '/');
+    // Di Railway aplikasi ini jalan di root domain (tanpa subfolder), sedangkan di
+    // localhost/XAMPP/Laragon jalan lewat subfolder /rmpadang/. Pakai penanda yang
+    // sama dengan deteksi database (getenv('MYSQLHOST')) untuk membedakan keduanya.
+    static $prefix = null;
+    if ($prefix === null) {
+        $prefix = getenv('MYSQLHOST') ? '' : '/rmpadang';
+    }
+    return $prefix . '/' . ltrim($path, '/');
 }
